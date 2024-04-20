@@ -189,7 +189,7 @@ pub fn jpr2ll(yx: (f64, f64), origin: JprOrigin) -> (f64, f64) {
 
     let long = long0 + (eta2.sinh() / xi2.cos()).atan();
 
-    (long / PI * 180., lat / PI * 180.)
+    (long, lat)
 }
 
 #[cfg(test)]
@@ -198,7 +198,7 @@ mod tests {
     use num::ToPrimitive;
 
     #[test]
-    fn it_works() {
+    fn jpr2ll_works() {
         let (long, lat) = jpr2ll((22694.980, 11573.375), JprOrigin::Nine);
 
         assert_eq!(
@@ -207,10 +207,12 @@ mod tests {
                 ((140. + 5. / 60. + 8. / 3600.) * 1000.)
                     .to_f64()
                     .unwrap()
+                    .to_radians()
                     .floor(),
                 ((36. + 6. / 60. + 15. / 3600.) * 1000.)
                     .to_f64()
                     .unwrap()
+                    .to_radians()
                     .floor()
             )
         );
