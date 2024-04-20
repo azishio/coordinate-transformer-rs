@@ -192,6 +192,106 @@ pub fn jpr2ll(yx: (f64, f64), origin: JprOrigin) -> (f64, f64) {
     (long, lat)
 }
 
+pub fn ll2jpr(ll: (f64, f64), origin: JprOrigin) -> (f64, f64) {
+    let (long, lat) = ll;
+
+    let lambda = long;
+    let phi = lat;
+
+    /*
+    浮動小数点演算は現時点でコンパイル時実行できないため、以下のコードを実行した結果を定数として用いる
+
+    const F: f64 = 298.257222101;
+    const N: f64 = 1. / (2. * F - 1.);
+
+    let a0 = 1. + (N.powf(2.)) / 4. + (N.powf(4.)) / 64.;
+
+    let a_arr = [
+        -(3. / 2.) * (N - (N.powf(3.)) / 8. - (N.powf(5.)) / 64.),
+        (15. / 16.) * (N.powf(2.) - (N.powf(4.)) / 4.),
+        -(35. / 48.) * (N.powf(3.) - (5. / 16.) * (N.powf(5.))),
+        (315. / 512.) * (N.powf(4.)),
+        -(693. / 1280.) * (N.powf(5.)),
+    ];
+    let alpha_arr = [
+        (1. / 2.) * N - (2. / 3.) * (N.powf(2.))
+            + (5. / 16.) * (N.powf(3.))
+            + (41. / 180.) * (N.powf(4.))
+            - (127. / 288.) * (N.powf(5.)),
+        (13. / 48.) * (N.powf(2.)) - (3. / 5.) * (N.powf(3.))
+            + (557. / 1440.) * (N.powf(4.))
+            + (281. / 630.) * (N.powf(5.)),
+        (61. / 240.) * (N.powf(3.)) - (103. / 140.) * (N.powf(4.))
+            + (15061. / 26880.) * (N.powf(5.)),
+        (49561. / 161280.) * (N.powf(4.)) - (179. / 168.) * (N.powf(5.)),
+        (34729. / 80640.) * (N.powf(5.)),
+    ];
+
+    println!("const A0: f64 = {};", a0);
+    println!("const A_ARR: [f64; 5] = {:?};", a_arr);
+    println!("const ALPHA_ARR: [f64; 5] = {:?};", alpha_arr);
+     */
+
+    let phi0 = LAT0[origin as usize];
+    let lambda0 = LONG0[origin as usize];
+
+    const A0: f64 = 1.0000007049454078;
+    const A_ARR: [f64; 5] = [
+        -0.0025188297041239312,
+        2.6435429493240994e-6,
+        -3.4526259073074147e-9,
+        4.891830424387949e-12,
+        -7.228726045813916e-15,
+    ];
+    const ALPHA_ARR: [f64; 5] = [
+        0.0008377318247285465,
+        7.608527848379248e-7,
+        1.1976455002315586e-9,
+        2.4291502606542468e-12,
+        5.750164384091974e-15,
+    ];
+
+    // 定数
+    const M0: f64 = 0.9999;
+    const A: f64 = 6378137.;
+    const F: f64 = 298.257222101;
+    const N: f64 = 1. / (2. * F - 1.);
+
+    const A_: f64 = ((M0 * A) / (1. + N)) * A0;
+
+    let s_ = ((M0 * A) / (1. + N))
+        * (A0 * phi0
+            + A_ARR.iter().enumerate().fold(0., |acc, (i, &a)| {
+                acc + a * (2. * (i as f64 + 1.) * phi0).sin()
+            }));
+
+    let lambda_c = (lambda - lambda0).cos();
+    let lambda_s = (lambda - lambda0).sin();
+
+    let t = (phi.sin().atanh()
+        - ((2. * N.sqrt()) / (1. + N)) * (((2. * N.sqrt()) / (1. + N)) * phi.sin()).atanh())
+    .sinh();
+    let t_ = (1. + t.powf(2.)).sqrt();
+
+    let xi2 = (t / lambda_c).atan();
+    let eta2 = (lambda_s / t_).atanh();
+
+    let x = A_
+        * (xi2
+            + ALPHA_ARR.iter().enumerate().fold(0., |acc, (i, &a)| {
+                acc + a * (2. * (i as f64 + 1.) * xi2).sin() * (2. * (i as f64 + 1.) * eta2).cosh()
+            }))
+        - s_;
+
+    let y = A_
+        * (eta2
+            + ALPHA_ARR.iter().enumerate().fold(0., |acc, (i, &a)| {
+                acc + a * (2. * (i as f64 + 1.) * xi2).cos() * (2. * (i as f64 + 1.) * eta2).sinh()
+            }));
+
+    (y, x)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -214,6 +314,25 @@ mod tests {
                     .unwrap()
                     .to_radians()
                     .floor()
+            )
+        );
+    }
+
+    #[test]
+    fn ll2jpr_works() {
+        let (y, x) = ll2jpr(
+            (
+                140.08785504166664_f64.to_radians(),
+                36.103774791666666_f64.to_radians(),
+            ),
+            JprOrigin::Nine,
+        );
+
+        assert_eq!(
+            ((y * 1000.).floor(), (x * 1000.).floor()),
+            (
+                (22916.2436_f64 * 1000.).floor(),
+                (11543.6883_f64 * 1000.).floor()
             )
         );
     }
