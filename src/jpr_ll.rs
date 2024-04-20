@@ -295,7 +295,6 @@ pub fn ll2jpr(ll: (f64, f64), origin: JprOrigin) -> (f64, f64) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use num::ToPrimitive;
 
     #[test]
     fn jpr2ll_works() {
@@ -304,14 +303,10 @@ mod tests {
         assert_eq!(
             ((long * 1000.).floor(), (lat * 1000.).floor()),
             (
-                ((140. + 5. / 60. + 8. / 3600.) * 1000.)
-                    .to_f64()
-                    .unwrap()
+                ((140.0_f64 + 5. / 60. + 8. / 3600.) * 1000.)
                     .to_radians()
                     .floor(),
-                ((36. + 6. / 60. + 15. / 3600.) * 1000.)
-                    .to_f64()
-                    .unwrap()
+                ((36.0_f64 + 6. / 60. + 15. / 3600.) * 1000.)
                     .to_radians()
                     .floor()
             )
