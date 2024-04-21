@@ -1,6 +1,6 @@
 [package]
 name = "coordinate-transformer"
-version = "1.0.0"
+version = "1.1.0"
 authors = ["azishio"]
 edition = "2021"
 description = "A library for transforming coordinates between longitude_latitude, JPR, and pixel."
