@@ -82,6 +82,11 @@ pub fn pixel2ll(pixel: (u32, u32), zoom: ZoomLv) -> (f64, f64) {
     (long, lat)
 }
 
+/// 弧度法の緯度とZoomレベルに応じたピクセル座標における1ピクセルあたりの長さ(m)を返す関数。
+pub fn pixel_resolution(lat: f64, zoom: ZoomLv) -> f64 {
+    156543.04 * lat.cos() / 2_f64.powf(zoom as i32 as f64)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -107,6 +112,18 @@ mod tests {
                 (35.6812405_f64.to_radians() * 1000.).floor()
             ),
             ((long * 1000.).floor(), (lat * 1000.).floor())
+        );
+    }
+
+    #[test]
+    fn pixel_resolution_works() {
+        let equator_length_m = 40075_f64 * 1000_f64;
+        let zoom_lv = ZoomLv::Lv17;
+        let resolution = pixel_resolution(0_f64.to_radians(), zoom_lv);
+
+        assert_eq!(
+            (resolution * 1000.).floor(),
+            (equator_length_m / (2_f64.powf(zoom_lv as i32 as f64) * 256.) * 1000.).floor()
         );
     }
 }
