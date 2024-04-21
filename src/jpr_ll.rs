@@ -74,6 +74,15 @@ const LONG0: [f64; 20] = [
 
 /// 平面直角座標(y, x)を弧度法で表現された(経度, 緯度)に変換する。
 ///　原点は日本測地系2011に基づく。
+///
+/// # Examples
+/// 平面直角座標から緯経度への変換
+///
+/// ```
+/// use coordinate_transformer::jpr_ll::{jpr2ll, JprOrigin};
+///
+/// let (long, lat) = jpr2ll((22694.980, 11573.375), JprOrigin::Nine);
+/// ```
 pub fn jpr2ll(yx: (f64, f64), origin: JprOrigin) -> (f64, f64) {
     let (y, x) = yx;
 
@@ -197,6 +206,21 @@ pub fn jpr2ll(yx: (f64, f64), origin: JprOrigin) -> (f64, f64) {
 
 /// 弧度法で表現された(経度, 緯度)を平面直角座標(y, x)に変換する。
 /// 原点は日本測地系2011に基づく。
+///
+/// # Examples
+/// 緯経度から平面直角座標への変換
+///
+/// ```
+/// use coordinate_transformer::jpr_ll::{ll2jpr, JprOrigin};
+///
+/// let (y, x) = ll2jpr(
+/// (
+/// 140.08785504166664_f64.to_radians(),
+/// 36.103774791666666_f64.to_radians(),
+/// ),
+/// JprOrigin::Nine,
+/// );
+/// ```
 pub fn ll2jpr(ll: (f64, f64), origin: JprOrigin) -> (f64, f64) {
     let (long, lat) = ll;
 

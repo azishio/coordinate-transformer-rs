@@ -35,6 +35,18 @@ pub enum ZoomLv {
 
 /// 緯度と経度をピクセル座標に変換する関数。
 /// 弧度法で与えられた(経度, 緯度)をZoomレベルに応じたピクセル座標(x, y)に変換する。
+///
+/// # Examples
+/// 緯経度をピクセル座標に変換する。
+///
+/// ```
+/// use coordinate_transformer::pixel_ll::{ll2pixel, ZoomLv};
+///
+/// let (x, y) = ll2pixel(
+/// (139.7649308_f64.to_radians(), 35.6812405_f64.to_radians()),
+/// ZoomLv::Lv21,
+/// );
+/// ```
 pub fn ll2pixel(ll: (f64, f64), zoom: ZoomLv) -> (u32, u32) {
     let (long, lat) = ll;
     const L: f64 = 85.05112878;
@@ -48,6 +60,15 @@ pub fn ll2pixel(ll: (f64, f64), zoom: ZoomLv) -> (u32, u32) {
 
 /// ピクセル座標を緯度と経度に変換する関数。
 /// Zoomレベルに応じたピクセル座標(x, y)を弧度法で表された(経度, 緯度)に変換する。
+///
+/// # Examples
+/// ピクセル座標を緯経度に変換する。
+///
+/// ```
+/// use coordinate_transformer::pixel_ll::{pixel2ll, ZoomLv};
+///
+/// let (long, lat) = pixel2ll((476868027, 211407949), ZoomLv::Lv21);
+/// ```
 pub fn pixel2ll(pixel: (u32, u32), zoom: ZoomLv) -> (f64, f64) {
     let (x, y) = pixel;
     const L: f64 = 85.05112878;
