@@ -12,6 +12,3 @@ readme = "README.md"
 keywords = ["longitude", "latitude", "jpr", "pixel"]
 categories = ["mathematics", "science::geo"]
 license = "MIT"
-
-[dependencies]
-num = "0.4.2"
