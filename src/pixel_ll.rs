@@ -1,9 +1,12 @@
 use std::f64::consts::PI;
 
+/// Enumerated type representing the Zoom level.
+///
 /// Zoomレベルを表す列挙型。
 ///
-/// Zoomレベルの最大は以下を理由に24とする。
-/// https://github.com/mapbox/geojson-vt/issues/87
+/// The maximum Zoom level shall be 24 for [this](https://github.com/mapbox/geojson-vt/issues/87) reason.
+///
+/// Zoomレベルの最大は[これ](https://github.com/mapbox/geojson-vt/issues/87)を理由に24とする。
 #[derive(Clone, Copy)]
 pub enum ZoomLv {
     Lv0,
@@ -32,11 +35,16 @@ pub enum ZoomLv {
     Lv23,
     Lv24,
 }
-
+/// Function to convert longitude and latitude to pixel coordinates.
+/// Converts (longitude, latitude) given by the arc degree method to pixel coordinates (x, y) according to Zoom level.
+///
 /// 緯度と経度をピクセル座標に変換する関数。
 /// 弧度法で与えられた(経度, 緯度)をZoomレベルに応じたピクセル座標(x, y)に変換する。
 ///
 /// # Examples
+///
+/// Convert longitude and latitude to pixel coordinates.
+///
 /// 緯経度をピクセル座標に変換する。
 ///
 /// ```
@@ -58,10 +66,16 @@ pub fn ll2pixel(ll: (f64, f64), zoom: ZoomLv) -> (u32, u32) {
     (x as u32, y as u32)
 }
 
+/// Function to convert pixel coordinates to longitude and latitude.
+/// Converts pixel coordinates (x, y) according to Zoom level to (longitude, latitude) expressed in arc degree method.
+///
 /// ピクセル座標を緯度と経度に変換する関数。
 /// Zoomレベルに応じたピクセル座標(x, y)を弧度法で表された(経度, 緯度)に変換する。
 ///
 /// # Examples
+///
+/// Convert pixel coordinates to longitude and latitude.
+///
 /// ピクセル座標を緯経度に変換する。
 ///
 /// ```
@@ -83,6 +97,17 @@ pub fn pixel2ll(pixel: (u32, u32), zoom: ZoomLv) -> (f64, f64) {
 }
 
 /// 弧度法の緯度とZoomレベルに応じたピクセル座標における1ピクセルあたりの長さ(m)を返す関数。
+///
+/// # Examples
+///
+/// Calculate the length per pixel (m) in pixel coordinates according to the latitude and Zoom level of the arc degree method.
+///
+/// 弧度法の緯度とZoomレベルに応じたピクセル座標における1ピクセルあたりの長さ(m)を計算する。
+/// ```
+/// use coordinate_transformer::pixel_ll::{pixel_resolution, ZoomLv};
+///
+/// let resolution = pixel_resolution(0_f64.to_radians(), ZoomLv::Lv17);
+///```
 pub fn pixel_resolution(lat: f64, zoom: ZoomLv) -> f64 {
     156543.04 * lat.cos() / 2_f64.powf(zoom as i32 as f64)
 }

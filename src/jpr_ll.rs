@@ -1,5 +1,7 @@
 use std::f64::consts::PI;
 
+/// Origin of plane rectangular coordinate system
+///
 /// 平面直角座標系の原点
 #[derive(Clone, Copy)]
 pub enum JprOrigin {
@@ -72,10 +74,16 @@ const LONG0: [f64; 20] = [
     9240. / 60. * DEG2RAD,
 ];
 
+/// Convert plane rectangular coordinates (y, x) to (longitude, latitude) expressed in arc degree method.
+/// Origin is based on Japan Geodetic System 2011.
+///
 /// 平面直角座標(y, x)を弧度法で表現された(経度, 緯度)に変換する。
 ///　原点は日本測地系2011に基づく。
 ///
 /// # Examples
+///
+/// Conversion from plane rectangular coordinates to longitude and latitude
+///
 /// 平面直角座標から緯経度への変換
 ///
 /// ```
@@ -87,6 +95,7 @@ pub fn jpr2ll(yx: (f64, f64), origin: JprOrigin) -> (f64, f64) {
     let (y, x) = yx;
 
     /*
+    Since floating-point arithmetic cannot be performed at compile-time at this time, the result of executing the following code is used as a constant.
     浮動小数点演算は現時点でコンパイル時実行できないため、以下のコードを実行した結果を定数として用いる
 
     const F: f64 = 298.257222101;
@@ -204,10 +213,16 @@ pub fn jpr2ll(yx: (f64, f64), origin: JprOrigin) -> (f64, f64) {
     (long, lat)
 }
 
+/// Convert (longitude, latitude) expressed in arc degree method to plane rectangular coordinates (y, x).
+/// Origin is based on Japan Geodetic System 2011.
+///
 /// 弧度法で表現された(経度, 緯度)を平面直角座標(y, x)に変換する。
 /// 原点は日本測地系2011に基づく。
 ///
 /// # Examples
+///
+/// Conversion from longitude and latitude to plane rectangular coordinates
+///
 /// 緯経度から平面直角座標への変換
 ///
 /// ```
@@ -228,6 +243,7 @@ pub fn ll2jpr(ll: (f64, f64), origin: JprOrigin) -> (f64, f64) {
     let phi = lat;
 
     /*
+    Since floating-point arithmetic cannot be performed at compile-time at this time, the result of executing the following code is used as a constant.
     浮動小数点演算は現時点でコンパイル時実行できないため、以下のコードを実行した結果を定数として用いる
 
     const F: f64 = 298.257222101;
