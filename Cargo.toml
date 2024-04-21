@@ -14,3 +14,6 @@ readme = "README.md"
 keywords = ["longitude", "latitude", "jpr", "pixel"]
 categories = ["mathematics", "science::geo"]
 license = "MIT"
+
+[dev-dependencies]
+assert-be-close = "1.0.0"

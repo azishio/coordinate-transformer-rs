@@ -90,6 +90,7 @@ pub fn pixel_resolution(lat: f64, zoom: ZoomLv) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use assert_be_close::assert_be_close;
     #[test]
     fn ll2pixel_works() {
         let (x, y) = ll2pixel(
@@ -106,13 +107,8 @@ mod tests {
 
         println!("{}, {}", long.to_degrees(), lat.to_degrees());
 
-        assert_eq!(
-            (
-                (139.7649308_f64.to_radians() * 1000.).floor(),
-                (35.6812405_f64.to_radians() * 1000.).floor()
-            ),
-            ((long * 1000.).floor(), (lat * 1000.).floor())
-        );
+        assert_be_close(139.7649308_f64.to_radians(), long, 5);
+        assert_be_close(35.6812405_f64.to_radians(), lat, 5);
     }
 
     #[test]
@@ -121,9 +117,10 @@ mod tests {
         let zoom_lv = ZoomLv::Lv17;
         let resolution = pixel_resolution(0_f64.to_radians(), zoom_lv);
 
-        assert_eq!(
-            (resolution * 1000.).floor(),
-            (equator_length_m / (2_f64.powf(zoom_lv as i32 as f64) * 256.) * 1000.).floor()
+        assert_be_close(
+            resolution,
+            equator_length_m / (2_f64.powf(zoom_lv as i32 as f64) * 256.),
+            5,
         );
     }
 }
