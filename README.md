@@ -27,3 +27,11 @@ ZoomLv::Lv21,
 let (long, lat) = pixel2ll((476868027, 211407949), ZoomLv::Lv21);
 ```
 
+## ライセンス
+
+Licensed under either of
+
++ Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
++ MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+
+at your option.
