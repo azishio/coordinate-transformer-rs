@@ -83,7 +83,7 @@ mod tests {
         assert_eq!(
             (
                 (139.7649308_f64.to_radians() * 1000.).floor(),
-                ((35.6812405_f64).to_radians() * 1000.).floor()
+                (35.6812405_f64.to_radians() * 1000.).floor()
             ),
             ((long * 1000.).floor(), (lat * 1000.).floor())
         );
