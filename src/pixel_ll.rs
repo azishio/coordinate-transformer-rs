@@ -1,6 +1,8 @@
 use std::f64::consts::PI;
 
-/// Zoomレベルの最大は以下を理由に24とする
+/// Zoomレベルを表す列挙型。
+///
+/// Zoomレベルの最大は以下を理由に24とする。
 /// https://github.com/mapbox/geojson-vt/issues/87
 #[derive(Clone, Copy)]
 pub enum ZoomLv {
@@ -31,6 +33,8 @@ pub enum ZoomLv {
     Lv24,
 }
 
+/// 緯度と経度をピクセル座標に変換する関数。
+/// 弧度法で与えられた(経度, 緯度)をZoomレベルに応じたピクセル座標(x, y)に変換する。
 pub fn ll2pixel(ll: (f64, f64), zoom: ZoomLv) -> (u32, u32) {
     let (long, lat) = ll;
     const L: f64 = 85.05112878;
@@ -42,6 +46,8 @@ pub fn ll2pixel(ll: (f64, f64), zoom: ZoomLv) -> (u32, u32) {
     (x as u32, y as u32)
 }
 
+/// ピクセル座標を緯度と経度に変換する関数。
+/// Zoomレベルに応じたピクセル座標(x, y)を弧度法で表された(経度, 緯度)に変換する。
 pub fn pixel2ll(pixel: (u32, u32), zoom: ZoomLv) -> (f64, f64) {
     let (x, y) = pixel;
     const L: f64 = 85.05112878;

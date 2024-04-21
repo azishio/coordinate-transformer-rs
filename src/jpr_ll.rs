@@ -1,5 +1,6 @@
 use std::f64::consts::PI;
 
+/// 平面直角座標系の原点
 #[derive(Clone, Copy)]
 pub enum JprOrigin {
     One = 1,
@@ -71,6 +72,8 @@ const LONG0: [f64; 20] = [
     9240. / 60. * DEG2RAD,
 ];
 
+/// 平面直角座標(y, x)を弧度法で表現された(経度, 緯度)に変換する。
+///　原点は日本測地系2011に基づく。
 pub fn jpr2ll(yx: (f64, f64), origin: JprOrigin) -> (f64, f64) {
     let (y, x) = yx;
 
@@ -192,6 +195,8 @@ pub fn jpr2ll(yx: (f64, f64), origin: JprOrigin) -> (f64, f64) {
     (long, lat)
 }
 
+/// 弧度法で表現された(経度, 緯度)を平面直角座標(y, x)に変換する。
+/// 原点は日本測地系2011に基づく。
 pub fn ll2jpr(ll: (f64, f64), origin: JprOrigin) -> (f64, f64) {
     let (long, lat) = ll;
 
