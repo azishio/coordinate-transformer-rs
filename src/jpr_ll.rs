@@ -184,29 +184,29 @@ pub fn jpr2ll(yx: (f64, f64), origin: JprOrigin) -> (f64, f64) {
 
     let s_ = ((M0 * A) / (1. + N))
         * (A0 * lat0
-            + A_ARR.iter().enumerate().fold(0., |acc, (i, &a)| {
-                acc + a * (2. * (i as f64 + 1.) * lat0).sin()
-            }));
+        + A_ARR.iter().enumerate().fold(0., |acc, (i, &a)| {
+        acc + a * (2. * (i as f64 + 1.) * lat0).sin()
+    }));
 
     let xi = (x + s_) / A_;
     let eta = y / A_;
 
     let xi2 = xi
         - BETA_ARR.iter().enumerate().fold(0., |acc, (i, &b)| {
-            acc + b * (2. * (i as f64 + 1.) * xi).sin() * (2. * (i as f64 + 1.) * eta).cosh()
-        });
+        acc + b * (2. * (i as f64 + 1.) * xi).sin() * (2. * (i as f64 + 1.) * eta).cosh()
+    });
 
     let eta2 = eta
         - BETA_ARR.iter().enumerate().fold(0., |acc, (i, &b)| {
-            acc + b * (2. * (i as f64 + 1.) * xi).cos() * (2. * (i as f64 + 1.) * eta).sinh()
-        });
+        acc + b * (2. * (i as f64 + 1.) * xi).cos() * (2. * (i as f64 + 1.) * eta).sinh()
+    });
 
     let chi = (xi2.sin() / eta2.cosh()).asin();
 
     let lat = chi
         + DELTA_ARR.iter().enumerate().fold(0., |acc, (i, &d)| {
-            acc + d * (2. * (i as f64 + 1.) * chi).sin()
-        });
+        acc + d * (2. * (i as f64 + 1.) * chi).sin()
+    });
 
     let long = long0 + (eta2.sinh() / xi2.cos()).atan();
 
@@ -238,9 +238,6 @@ pub fn jpr2ll(yx: (f64, f64), origin: JprOrigin) -> (f64, f64) {
 /// ```
 pub fn ll2jpr(ll: (f64, f64), origin: JprOrigin) -> (f64, f64) {
     let (long, lat) = ll;
-
-    let lambda = long;
-    let phi = lat;
 
     /*
     Since floating-point arithmetic cannot be performed at compile-time at this time, the result of executing the following code is used as a constant.
@@ -277,8 +274,8 @@ pub fn ll2jpr(ll: (f64, f64), origin: JprOrigin) -> (f64, f64) {
     println!("const ALPHA_ARR: [f64; 5] = {:?};", alpha_arr);
      */
 
-    let phi0 = LAT0[origin as usize];
-    let lambda0 = LONG0[origin as usize];
+    let lat0 = LAT0[origin as usize];
+    let long0 = LONG0[origin as usize];
 
     const A0: f64 = 1.0000007049454078;
     const A_ARR: [f64; 5] = [
@@ -305,17 +302,17 @@ pub fn ll2jpr(ll: (f64, f64), origin: JprOrigin) -> (f64, f64) {
     const A_: f64 = ((M0 * A) / (1. + N)) * A0;
 
     let s_ = ((M0 * A) / (1. + N))
-        * (A0 * phi0
-            + A_ARR.iter().enumerate().fold(0., |acc, (i, &a)| {
-                acc + a * (2. * (i as f64 + 1.) * phi0).sin()
-            }));
+        * (A0 * lat0
+        + A_ARR.iter().enumerate().fold(0., |acc, (i, &a)| {
+        acc + a * (2. * (i as f64 + 1.) * lat0).sin()
+    }));
 
-    let lambda_c = (lambda - lambda0).cos();
-    let lambda_s = (lambda - lambda0).sin();
+    let lambda_c = (long - long0).cos();
+    let lambda_s = (long - long0).sin();
 
-    let t = (phi.sin().atanh()
-        - ((2. * N.sqrt()) / (1. + N)) * (((2. * N.sqrt()) / (1. + N)) * phi.sin()).atanh())
-    .sinh();
+    let t = (lat.sin().atanh()
+        - ((2. * N.sqrt()) / (1. + N)) * (((2. * N.sqrt()) / (1. + N)) * lat.sin()).atanh())
+        .sinh();
     let t_ = (1. + t.powf(2.)).sqrt();
 
     let xi2 = (t / lambda_c).atan();
@@ -323,24 +320,25 @@ pub fn ll2jpr(ll: (f64, f64), origin: JprOrigin) -> (f64, f64) {
 
     let x = A_
         * (xi2
-            + ALPHA_ARR.iter().enumerate().fold(0., |acc, (i, &a)| {
-                acc + a * (2. * (i as f64 + 1.) * xi2).sin() * (2. * (i as f64 + 1.) * eta2).cosh()
-            }))
+        + ALPHA_ARR.iter().enumerate().fold(0., |acc, (i, &a)| {
+        acc + a * (2. * (i as f64 + 1.) * xi2).sin() * (2. * (i as f64 + 1.) * eta2).cosh()
+    }))
         - s_;
 
     let y = A_
         * (eta2
-            + ALPHA_ARR.iter().enumerate().fold(0., |acc, (i, &a)| {
-                acc + a * (2. * (i as f64 + 1.) * xi2).cos() * (2. * (i as f64 + 1.) * eta2).sinh()
-            }));
+        + ALPHA_ARR.iter().enumerate().fold(0., |acc, (i, &a)| {
+        acc + a * (2. * (i as f64 + 1.) * xi2).cos() * (2. * (i as f64 + 1.) * eta2).sinh()
+    }));
 
     (y, x)
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use assert_be_close::assert_be_close;
+
+    use super::*;
 
     #[test]
     fn jpr2ll_works() {
