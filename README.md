@@ -1,6 +1,6 @@
 # coordinate-transformer-rs
 
-Converts latitude and longitude, plane rectangular coordinates, and pixel coordinates.
+Library for transforming geocentric Cartesian, longitude-latitude, JPR and pixel coordinates.
 
 緯経度、平面直角座標、ピクセル座標の変換を行う。
 
