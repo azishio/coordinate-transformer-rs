@@ -137,7 +137,7 @@ pub fn pixel2tile(pixel: (u32, u32)) -> (u32, u32) {
 
 #[cfg(test)]
 mod tests {
-    use assert_be_close::assert_be_close;
+    use close_to::assert_close_to;
 
     use super::*;
 
@@ -157,8 +157,8 @@ mod tests {
 
         println!("{}, {}", long.to_degrees(), lat.to_degrees());
 
-        assert_be_close(139.7649308_f64.to_radians(), long, 5);
-        assert_be_close(35.6812405_f64.to_radians(), lat, 5);
+        assert_close_to(139.7649308_f64.to_radians(), long, 5);
+        assert_close_to(35.6812405_f64.to_radians(), lat, 5);
     }
 
     #[test]
@@ -167,7 +167,7 @@ mod tests {
         let zoom_lv = ZoomLv::Lv17;
         let resolution = pixel_resolution(0_f64.to_radians(), zoom_lv);
 
-        assert_be_close(
+        assert_close_to(
             resolution,
             equator_length_m / (2_f64.powf(zoom_lv as i32 as f64) * 256.),
             5,

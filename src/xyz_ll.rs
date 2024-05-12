@@ -81,7 +81,7 @@ pub fn xyz2llz(xyz: (f64, f64, f64)) -> ((f64, f64), f64) {
 
 #[cfg(test)]
 mod tests {
-    use assert_be_close::assert_be_close;
+    use close_to::assert_close_to;
 
     use super::*;
 
@@ -92,9 +92,9 @@ mod tests {
 
         let (x, y, z) = llz2xyz((long, lat), altitude);
 
-        assert_be_close(x, -3957446.631, 3);
-        assert_be_close(y, 3320692.008, 3);
-        assert_be_close(z, 3728250.454, 3);
+        assert_close_to(x, -3957446.631, 3);
+        assert_close_to(y, 3320692.008, 3);
+        assert_close_to(z, 3728250.454, 3);
     }
 
     #[test]
@@ -103,8 +103,8 @@ mod tests {
 
         let ((long, lat), altitude) = xyz2llz(xyz);
 
-        assert_be_close(long.to_degrees(), 140., 3);
-        assert_be_close(lat.to_degrees(), 36., 3);
-        assert_be_close(altitude, 100., 3);
+        assert_close_to(long.to_degrees(), 140., 3);
+        assert_close_to(lat.to_degrees(), 36., 3);
+        assert_close_to(altitude, 100., 3);
     }
 }

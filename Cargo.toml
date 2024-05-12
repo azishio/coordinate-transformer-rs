@@ -16,4 +16,4 @@ categories = ["mathematics", "science::geo"]
 license = "MIT OR Apache-2.0"
 
 [dev-dependencies]
-assert-be-close = "1.0.0"
+close-to = "0.1.0"

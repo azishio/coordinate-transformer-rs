@@ -336,7 +336,7 @@ pub fn ll2jpr(ll: (f64, f64), origin: JprOrigin) -> (f64, f64) {
 
 #[cfg(test)]
 mod tests {
-    use assert_be_close::assert_be_close;
+    use close_to::assert_close_to;
 
     use super::*;
 
@@ -355,8 +355,8 @@ mod tests {
                     .floor()
             )
         );
-        assert_be_close(long, 140.085555556_f64.to_radians(), 4);
-        assert_be_close(lat, 36.1041666667_f64.to_radians(), 4);
+        assert_close_to(long, 140.085555556_f64.to_radians(), 4);
+        assert_close_to(lat, 36.1041666667_f64.to_radians(), 4);
     }
 
     #[test]
@@ -369,7 +369,7 @@ mod tests {
             JprOrigin::Nine,
         );
 
-        assert_be_close(y, 22916.2436, 4);
-        assert_be_close(x, 11543.6883, 4);
+        assert_close_to(y, 22916.2436, 4);
+        assert_close_to(x, 11543.6883, 4);
     }
 }
