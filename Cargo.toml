@@ -1,9 +1,9 @@
 [package]
 name = "coordinate-transformer"
-version = "1.3.0"
+version = "1.2.0"
 authors = ["azishio"]
 edition = "2021"
-description = "Provides functions and structures for converting geocentric Cartesian coordinates, latitude and longitude, JPR, and pixel coordinates."
+description = "Library for transforming geocentric Cartesian, longitude-latitude, JPR and pixel coordinates."
 
 documentation = "https://docs.rs/coordinate-transformer"
 homepage = "https://crates.io/crates/coordinate-transformer"
