@@ -1,3 +1,11 @@
+/// Defines a structure representing each coordinate value.
+/// This reduces the risk of passing wrong arguments to the coordinate conversion function.
+/// It also allows coordinate conversions that must go through latitude and longitude to be done at once.
+///
+/// 各座標値を表す構造体を定義しています。
+/// これを使用することで、座標変換関数に間違った引数を渡すリスクを減らせます。
+/// また、緯度経度を経由しなくてはいけない座標変換を一度にできます。
+
 use crate::{jpr2ll, JprOrigin, ll2jpr, ll2pixel, llz2xyz, pixel2ll, xyz2llz, ZoomLv};
 
 /// structure representing latitude and longitude
