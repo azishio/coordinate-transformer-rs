@@ -7,7 +7,7 @@ use std::f64::consts::PI;
 /// The maximum Zoom level shall be 24 for [this](https://github.com/mapbox/geojson-vt/issues/87) reason.
 ///
 /// Zoomレベルの最大は[これ](https://github.com/mapbox/geojson-vt/issues/87)を理由に24とする。
-#[derive(Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum ZoomLv {
     Lv0,
     Lv1,
@@ -35,6 +35,7 @@ pub enum ZoomLv {
     Lv23,
     Lv24,
 }
+
 /// Function to convert longitude and latitude to pixel coordinates.
 /// Converts (longitude, latitude) given by the arc degree method to pixel coordinates (x, y) according to Zoom level.
 ///
@@ -90,12 +91,14 @@ pub fn pixel2ll(pixel: (u32, u32), zoom: ZoomLv) -> (f64, f64) {
     let long = PI * (x as f64 / 2_f64.powf(zoom as i32 as f64 + 7.) - 1.);
     let lat = ((-PI * y as f64 / (2_f64.powf(zoom as i32 as f64 + 7.))
         + (PI * L / 180.).sin().atanh())
-    .tanh())
-    .asin();
+        .tanh())
+        .asin();
 
     (long, lat)
 }
 
+/// Function to return the length per pixel (m) in pixel coordinates according to the latitude and Zoom level of the arc degree method.
+/// 
 /// 弧度法の緯度とZoomレベルに応じたピクセル座標における1ピクセルあたりの長さ(m)を返す関数。
 ///
 /// # Examples
@@ -112,10 +115,32 @@ pub fn pixel_resolution(lat: f64, zoom: ZoomLv) -> f64 {
     156543.04 * lat.cos() / 2_f64.powf(zoom as i32 as f64)
 }
 
+/// Function to convert pixel coordinates to tile coordinates.
+///
+/// ピクセル座標をタイル座標に変換する関数。
+///
+/// # Examples
+///
+/// Calculate tile coordinates from pixel coordinates.
+///
+/// ピクセル座標からタイル座標を計算する。
+///
+/// ```
+/// use coordinate_transformer::pixel_ll::pixel2tile;
+///
+/// let (tile_x, tile_y) = pixel2tile((476868027, 211407949));
+/// ```
+pub fn pixel2tile(pixel: (u32, u32)) -> (u32, u32) {
+    let (x, y) = pixel;
+    (x / 256, y / 256)
+}
+
 #[cfg(test)]
 mod tests {
-    use super::*;
     use assert_be_close::assert_be_close;
+
+    use super::*;
+
     #[test]
     fn ll2pixel_works() {
         let (x, y) = ll2pixel(

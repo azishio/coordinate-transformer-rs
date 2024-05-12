@@ -3,7 +3,7 @@ use std::f64::consts::PI;
 /// Origin of plane rectangular coordinate system
 ///
 /// 平面直角座標系の原点
-#[derive(Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum JprOrigin {
     One = 1,
     Two,
