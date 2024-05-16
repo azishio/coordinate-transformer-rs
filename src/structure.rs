@@ -12,7 +12,7 @@ use crate::{jpr2ll, JprOrigin, ll2jpr, ll2pixel, llz2xyz, pixel2ll, xyz2llz, Zoo
 ///
 /// 緯度経度を表す構造体
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
-struct LL {
+pub struct LL {
     long: f64,
     lat: f64,
 }
@@ -61,7 +61,7 @@ impl LL {
 ///
 /// 平面直角座標を表す構造体に変換する
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
-struct JPR {
+pub struct JPR {
     y: f64,
     x: f64,
     origin: JprOrigin,
@@ -111,7 +111,7 @@ impl JPR {
 ///
 /// ピクセル座標を表す構造体
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-struct Pixel {
+pub struct Pixel {
     x: u32,
     y: u32,
     zoom: ZoomLv,
@@ -163,7 +163,7 @@ impl Pixel {
 /// ピクセル座標に高さ情報を追加した構造体
 /// 高さはピクセルの分解能(m)に合わせて決定される
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
-struct Voxel {
+pub struct Voxel {
     x: u32,
     y: u32,
     z: u32,
@@ -265,7 +265,7 @@ impl Voxel {
 ///
 /// 直交座標系(EPSG:4979)座標を表す構造体
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
-struct XYZ {
+pub struct XYZ {
     x: f64,
     y: f64,
     z: f64,
