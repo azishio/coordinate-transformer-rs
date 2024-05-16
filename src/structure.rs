@@ -1,3 +1,6 @@
+#[cfg(feature = "vec-x")]
+use vec_x::VecX;
+
 /// Defines a structure representing each coordinate value.
 /// This reduces the risk of passing wrong arguments to the coordinate conversion function.
 /// It also allows coordinate conversions that must go through latitude and longitude to be done at once.
@@ -32,6 +35,14 @@ impl LL {
         (self.long, self.lat)
     }
 
+    /// Returns an array of [longitude, latitude]
+    ///
+    /// [経度, 緯度]の配列を返す
+    #[cfg(feature = "vec-x")]
+    pub fn to_vec2(&self) -> VecX<f64, 2> {
+        VecX::new([self.long, self.lat])
+    }
+
     /// Convert to a structure representing JPR coordinates
     ///
     /// JPR座標を表す構造体に変換する
@@ -45,7 +56,7 @@ impl LL {
     /// Pixel座標を表す構造体に変換する
     pub fn to_pixel(&self, zoom_lv: ZoomLv) -> Pixel {
         let (x, y) = ll2pixel(self.to_tuple(), zoom_lv);
-        Pixel::new(x as u32, y as u32, zoom_lv)
+        Pixel::new(x, y, zoom_lv)
     }
 
     /// Convert to a structure representing Cartesian (EPSG:4979) coordinates
@@ -82,6 +93,14 @@ impl JPR {
         (self.y, self.x)
     }
 
+    /// Returns an array of [y, x]
+    ///
+    /// [y, x]の配列を返す
+    #[cfg(feature = "vec-x")]
+    pub fn to_vec2(&self) -> VecX<f64, 2> {
+        VecX::new([self.y, self.x])
+    }
+
     /// Convert to a structure representing latitude and longitude
     ///
     /// 緯度経度を表す構造体に変換する
@@ -95,7 +114,7 @@ impl JPR {
     /// Pixel座標を表す構造体に変換する
     pub fn to_pixel(&self, zoom_lv: ZoomLv) -> Pixel {
         let (x, y) = ll2pixel(self.to_ll().to_tuple(), zoom_lv);
-        Pixel::new(x as u32, y as u32, zoom_lv)
+        Pixel::new(x, y, zoom_lv)
     }
 
     /// Convert to a structure representing Cartesian (EPSG:4979) coordinates
@@ -130,6 +149,14 @@ impl Pixel {
     /// (x, y)をタプルで返す
     pub fn to_tuple(&self) -> (u32, u32) {
         (self.x, self.y)
+    }
+
+    /// Returns an array of [x, y]
+    ///
+    /// [x, y]の配列を返す
+    #[cfg(feature = "vec-x")]
+    pub fn to_array(&self) -> VecX<u32, 2> {
+        VecX::new([self.x, self.y])
     }
 
     /// Convert to a structure representing latitude and longitude
@@ -186,11 +213,27 @@ impl Voxel {
         (self.x, self.y, self.z)
     }
 
+    /// Returns an array of [x, y, z]
+    ///
+    /// [x, y, z]の配列を返す
+    #[cfg(feature = "vec-x")]
+    pub fn to_vec3(&self) -> VecX<u32, 3> {
+        VecX::new([self.x, self.y, self.z])
+    }
+
     /// Returns a tuple of (x, y)
     ///
     /// (x, y)をタプルで返す
     pub fn to_2d_tuple(&self) -> (u32, u32) {
         (self.x, self.y)
+    }
+
+    /// Returns an array of [x, y]
+    ///
+    /// [x, y]の配列を返す
+    #[cfg(feature = "vec-x")]
+    pub fn to_vec2(&self) -> VecX<u32, 2> {
+        VecX::new([self.x, self.y])
     }
 
     /// Convert to a structure representing latitude and longitude
@@ -286,6 +329,14 @@ impl XYZ {
         (self.x, self.y, self.z)
     }
 
+    /// Returns an array of [x, y, z]
+    ///
+    /// [x, y, z]の配列を返す
+    #[cfg(feature = "vec-x")]
+    pub fn to_vec3(&self) -> VecX<f64, 3> {
+        VecX::new([self.x, self.y, self.z])
+    }
+
     /// Convert to a structure representing latitude and longitude
     ///
     /// 緯度経度を表す構造体に変換する
@@ -323,7 +374,7 @@ impl XYZ {
     /// ピクセル座標を表す構造体に変換する
     pub fn to_pixel(&self, zoom_lv: ZoomLv) -> Pixel {
         let (x, y) = ll2pixel(self.to_ll().to_tuple(), zoom_lv);
-        Pixel::new(x as u32, y as u32, zoom_lv)
+        Pixel::new(x, y, zoom_lv)
     }
 
     /// Convert to a structure representing pixel coordinates with altitude (m)

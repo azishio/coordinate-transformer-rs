@@ -17,3 +17,6 @@ license = "MIT OR Apache-2.0"
 
 [dev-dependencies]
 close-to = "0.1.0"
+
+[dependencies]
+vec-x = { version = "0.2.0", optional = true }
