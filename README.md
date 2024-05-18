@@ -1,10 +1,10 @@
 # coordinate-transformer-rs
 
-It provides functions to transform geocentric Cartesian coordinates, latitude and longitude, plane rectangular
-coordinates, and pixel coordinates.
+Provides functions to convert geocentric Cartesian coordinates, latitude and longitude, plane rectangular coordinates,
+and pixel coordinates.
 It also defines a structure to represent each coordinate value.
 
-地心直交座標、緯度経度、平面直角座標、ピクセル座標の変換をう関数を提供する。
+地心直交座標、緯度経度、平面直角座標、ピクセル座標の変換を行う関数を提供する。
 また、それぞれの座標値を表すための構造体も定義している。
 
 ## 使い方
