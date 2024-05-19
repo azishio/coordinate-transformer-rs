@@ -26,6 +26,54 @@ pub enum JprOrigin {
     Nineteen,
 }
 
+impl JprOrigin {
+    /// Attempts to convert from a type implementing `Into<u8>` to `JprOrigin`.
+    /// Returns `Err` if the argument value is outside the range 1-19.
+    ///
+    /// `Into<u8>`を実装する型から`JprOrigin`への変換を試みます。
+    /// 引数の値が1から19の範囲外の場合、`Err`を返します。
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use coordinate_transformer::jpr_ll::JprOrigin;
+    ///
+    /// let origin = JprOrigin::parse(9);
+    /// assert_eq!(origin, Ok(JprOrigin::Nine));
+    /// ```
+    /// ```should_panic
+    /// use coordinate_transformer::jpr_ll::JprOrigin;
+    ///
+    /// let origin = JprOrigin::parse(20);
+    /// assert!(origin.is_ok());
+    /// ```
+    pub fn parse<T: Into<u8>>(num: T) -> Result<Self, ()> {
+        match num.into() {
+            1 => Ok(Self::One),
+            2 => Ok(Self::Two),
+            3 => Ok(Self::Three),
+            4 => Ok(Self::Four),
+            5 => Ok(Self::Five),
+            6 => Ok(Self::Six),
+            7 => Ok(Self::Seven),
+            8 => Ok(Self::Eight),
+            9 => Ok(Self::Nine),
+            10 => Ok(Self::Ten),
+            11 => Ok(Self::Eleven),
+            12 => Ok(Self::Twelve),
+            13 => Ok(Self::Thirteen),
+            14 => Ok(Self::Fourteen),
+            15 => Ok(Self::Fifteen),
+            16 => Ok(Self::Sixteen),
+            17 => Ok(Self::Seventeen),
+            18 => Ok(Self::Eighteen),
+            19 => Ok(Self::Nineteen),
+            _ => Err(()),
+        }
+    }
+}
+
+
 const DEG2RAD: f64 = PI / 180.;
 // 秒単位
 const LAT0: [f64; 20] = [

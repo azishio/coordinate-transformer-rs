@@ -36,6 +36,59 @@ pub enum ZoomLv {
     Lv24,
 }
 
+impl ZoomLv {
+    /// Attempts to convert from a type that implements `Into<u8>` to `LoomLv`.
+    /// Returns `Err` if the value of the argument is outside the range 0 to 24.///
+    ///
+    /// `Into<u8>`を実装する型から`LoomLv`への変換を試みます。
+    /// 引数の値が0から24の範囲外の場合、`Err`を返します。
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use coordinate_transformer::pixel_ll::ZoomLv;
+    ///
+    /// let zoom_lv = ZoomLv::parse(9);
+    /// assert_eq!(zoom_lv, Ok(ZoomLv::Lv9));
+    /// ```
+    /// ```should_panic
+    /// use coordinate_transformer::pixel_ll::ZoomLv;
+    ///
+    /// let zoom_lv = ZoomLv::parse(25);
+    /// assert!(zoom_lv.is_ok());
+    /// ```
+    pub fn parse<T: Into<u8>>(num: T) -> Result<Self, ()> {
+        match num.into() {
+            0 => Ok(Self::Lv0),
+            1 => Ok(Self::Lv1),
+            2 => Ok(Self::Lv2),
+            3 => Ok(Self::Lv3),
+            4 => Ok(Self::Lv4),
+            5 => Ok(Self::Lv5),
+            6 => Ok(Self::Lv6),
+            7 => Ok(Self::Lv7),
+            8 => Ok(Self::Lv8),
+            9 => Ok(Self::Lv9),
+            10 => Ok(Self::Lv10),
+            11 => Ok(Self::Lv11),
+            12 => Ok(Self::Lv12),
+            13 => Ok(Self::Lv13),
+            14 => Ok(Self::Lv14),
+            15 => Ok(Self::Lv15),
+            16 => Ok(Self::Lv16),
+            17 => Ok(Self::Lv17),
+            18 => Ok(Self::Lv18),
+            19 => Ok(Self::Lv19),
+            20 => Ok(Self::Lv20),
+            21 => Ok(Self::Lv21),
+            22 => Ok(Self::Lv22),
+            23 => Ok(Self::Lv23),
+            24 => Ok(Self::Lv24),
+            _ => Err(()),
+        }
+    }
+}
+
 /// Function to convert longitude and latitude to pixel coordinates.
 /// Converts (longitude, latitude) given by the arc degree method to pixel coordinates (x, y) according to Zoom level.
 ///
@@ -98,7 +151,7 @@ pub fn pixel2ll(pixel: (u32, u32), zoom: ZoomLv) -> (f64, f64) {
 }
 
 /// Function to return the length per pixel (m) in pixel coordinates according to the latitude and Zoom level of the arc degree method.
-/// 
+///
 /// 弧度法の緯度とZoomレベルに応じたピクセル座標における1ピクセルあたりの長さ(m)を返す関数。
 ///
 /// # Examples
