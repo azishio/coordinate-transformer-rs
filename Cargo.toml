@@ -1,6 +1,6 @@
 [package]
 name = "coordinate-transformer"
-version = "1.6.0"
+version = "1.7.0"
 authors = ["azishio"]
 edition = "2021"
 description = "Provides functions and structures for converting geocentric Cartesian coordinates, latitude and longitude, JPR, and pixel coordinates."
