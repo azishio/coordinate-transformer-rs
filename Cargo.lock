@@ -28,6 +28,7 @@ name = "coordinate-transformer"
 version = "1.6.0"
 dependencies = [
  "close-to",
+ "num",
  "vec-x",
 ]
 
