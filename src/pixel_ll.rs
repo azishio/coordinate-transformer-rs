@@ -1,4 +1,8 @@
 use std::f64::consts::PI;
+use std::str::FromStr;
+
+use num::cast::AsPrimitive;
+use num::Integer;
 
 /// Enumerated type representing the Zoom level.
 ///
@@ -57,8 +61,8 @@ impl ZoomLv {
     /// let zoom_lv = ZoomLv::parse(25);
     /// assert!(zoom_lv.is_ok());
     /// ```
-    pub fn parse<T: Into<u8>>(num: T) -> Result<Self, ()> {
-        match num.into() {
+    pub fn parse<T: Integer + AsPrimitive<u8>>(num: T) -> Result<Self, ()> {
+        match num.as_() {
             0 => Ok(Self::Lv0),
             1 => Ok(Self::Lv1),
             2 => Ok(Self::Lv2),
@@ -85,6 +89,107 @@ impl ZoomLv {
             23 => Ok(Self::Lv23),
             24 => Ok(Self::Lv24),
             _ => Err(()),
+        }
+    }
+}
+
+impl TryFrom<u8> for ZoomLv
+{
+    type Error = ();
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        Self::parse(value)
+    }
+}
+
+impl TryFrom<u16> for ZoomLv
+{
+    type Error = ();
+
+    fn try_from(value: u16) -> Result<Self, Self::Error> {
+        Self::parse(value)
+    }
+}
+
+impl TryFrom<u32> for ZoomLv
+{
+    type Error = ();
+
+    fn try_from(value: u32) -> Result<Self, Self::Error> {
+        Self::parse(value)
+    }
+}
+
+impl TryFrom<u64> for ZoomLv
+{
+    type Error = ();
+
+    fn try_from(value: u64) -> Result<Self, Self::Error> {
+        Self::parse(value)
+    }
+}
+
+impl TryFrom<usize> for ZoomLv
+{
+    type Error = ();
+
+    fn try_from(value: usize) -> Result<Self, Self::Error> {
+        Self::parse(value)
+    }
+}
+
+impl TryFrom<i8> for ZoomLv
+{
+    type Error = ();
+
+    fn try_from(value: i8) -> Result<Self, Self::Error> {
+        Self::parse(value)
+    }
+}
+
+impl TryFrom<i16> for ZoomLv
+{
+    type Error = ();
+
+    fn try_from(value: i16) -> Result<Self, Self::Error> {
+        Self::parse(value)
+    }
+}
+
+impl TryFrom<i32> for ZoomLv
+{
+    type Error = ();
+
+    fn try_from(value: i32) -> Result<Self, Self::Error> {
+        Self::parse(value)
+    }
+}
+
+impl TryFrom<i64> for ZoomLv
+{
+    type Error = ();
+
+    fn try_from(value: i64) -> Result<Self, Self::Error> {
+        Self::parse(value)
+    }
+}
+
+impl TryFrom<isize> for ZoomLv
+{
+    type Error = ();
+
+    fn try_from(value: isize) -> Result<Self, Self::Error> {
+        Self::parse(value)
+    }
+}
+
+impl FromStr for ZoomLv {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.parse::<u8>() {
+            Ok(num) => Self::parse(num),
+            Err(_) => Err(()),
         }
     }
 }

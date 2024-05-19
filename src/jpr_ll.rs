@@ -1,4 +1,8 @@
 use std::f64::consts::PI;
+use std::str::FromStr;
+
+use num::cast::AsPrimitive;
+use num::Integer;
 
 /// Origin of plane rectangular coordinate system
 ///
@@ -47,8 +51,8 @@ impl JprOrigin {
     /// let origin = JprOrigin::parse(20);
     /// assert!(origin.is_ok());
     /// ```
-    pub fn parse<T: Into<u8>>(num: T) -> Result<Self, ()> {
-        match num.into() {
+    pub fn parse<T: Integer + AsPrimitive<u8>>(num: T) -> Result<Self, ()> {
+        match num.as_() {
             1 => Ok(Self::One),
             2 => Ok(Self::Two),
             3 => Ok(Self::Three),
@@ -73,6 +77,96 @@ impl JprOrigin {
     }
 }
 
+impl TryFrom<u8> for JprOrigin {
+    type Error = ();
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        JprOrigin::parse(value)
+    }
+}
+
+impl TryFrom<u16> for JprOrigin {
+    type Error = ();
+
+    fn try_from(value: u16) -> Result<Self, Self::Error> {
+        JprOrigin::parse(value)
+    }
+}
+
+impl TryFrom<u32> for JprOrigin {
+    type Error = ();
+
+    fn try_from(value: u32) -> Result<Self, Self::Error> {
+        JprOrigin::parse(value)
+    }
+}
+
+impl TryFrom<u64> for JprOrigin {
+    type Error = ();
+
+    fn try_from(value: u64) -> Result<Self, Self::Error> {
+        JprOrigin::parse(value)
+    }
+}
+
+impl TryFrom<usize> for JprOrigin {
+    type Error = ();
+
+    fn try_from(value: usize) -> Result<Self, Self::Error> {
+        JprOrigin::parse(value)
+    }
+}
+
+impl TryFrom<i8> for JprOrigin {
+    type Error = ();
+
+    fn try_from(value: i8) -> Result<Self, Self::Error> {
+        JprOrigin::parse(value)
+    }
+}
+
+impl TryFrom<i16> for JprOrigin {
+    type Error = ();
+
+    fn try_from(value: i16) -> Result<Self, Self::Error> {
+        JprOrigin::parse(value)
+    }
+}
+
+impl TryFrom<i32> for JprOrigin {
+    type Error = ();
+
+    fn try_from(value: i32) -> Result<Self, Self::Error> {
+        JprOrigin::parse(value)
+    }
+}
+
+impl TryFrom<i64> for JprOrigin {
+    type Error = ();
+
+    fn try_from(value: i64) -> Result<Self, Self::Error> {
+        JprOrigin::parse(value)
+    }
+}
+
+impl TryFrom<isize> for JprOrigin {
+    type Error = ();
+
+    fn try_from(value: isize) -> Result<Self, Self::Error> {
+        JprOrigin::parse(value)
+    }
+}
+
+impl FromStr for JprOrigin {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.parse::<u8>() {
+            Ok(num) => JprOrigin::parse(num),
+            Err(_) => Err(()),
+        }
+    }
+}
 
 const DEG2RAD: f64 = PI / 180.;
 // 秒単位
